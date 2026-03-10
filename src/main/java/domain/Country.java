@@ -15,9 +15,10 @@ import javax.persistence.FetchType;
 public class Country {
 	@Id
 	private String nameCountry;
+	@OneToOne(cascade=CascadeType.ALL)
 	private City capital;
 	private int populCountry;
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.PERSIST)
 	private Set<Country> neighbors=new HashSet<Country>();
 	@OneToOne(orphanRemoval=true)
 	private President president;

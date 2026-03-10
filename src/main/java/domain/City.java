@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 public class City {
 	@Id
 	private String nameCity;
+	@OneToOne
 	private Country country;
 	private int populCity;
 	private String mainAirport;

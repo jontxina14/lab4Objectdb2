@@ -14,7 +14,9 @@ public class President {
 	private int started;
 	private AccessMode accessPower;
 	private int ended;
+	@OneToOne
 	private President preceededBy;
+	@OneToOne
 	private President succeededBy;
 	public String getFirstName() {
 		return firstName;

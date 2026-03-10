@@ -61,9 +61,9 @@ public class DataAccess implements DataAccessInterface {
 			openDb();
 			TypedQuery<Country> query = db.createQuery("SELECT c FROM Country c", Country.class);
 			results = query.getResultList();
-//			for (Country c: results) {
-//				System.out.println(c+" with neighbors: "+c.getNeighbors());
-//			}
+			for (Country c: results) {
+				System.out.println(c+" with neighbors: "+c.getNeighbors());
+			}
 		} catch	(Exception e) {	e.printStackTrace();
 		} finally { closeDb(); }
 		return results;
@@ -74,9 +74,15 @@ public class DataAccess implements DataAccessInterface {
 		boolean error=true;
 		try {
 			openDb();
-
 			// Your code here (section 2)
-			
+			db.getTransaction().begin();
+			Country country = new Country(countryName,countryPopul);
+			City capital = new City(capitalName,country,capitalPopul,airportName,foundationYear);
+			country.setCapital(capital);
+			db.persist(country);
+			db.getTransaction().commit();
+			closeDb();
+			return true;
 			
 			
 			
@@ -94,7 +100,9 @@ public class DataAccess implements DataAccessInterface {
 			db.getTransaction().begin();
 			Country c=db.find(Country.class,country.getNameCountry());
 			db.remove(c);
-
+			for(Country nc: c.getNeighbors()) {
+				nc.getNeighbors().remove(c);
+			}
 			db.getTransaction().commit();
 			System.out.println("object removed "+country.getNameCountry());	
 		} catch (Exception e) {
